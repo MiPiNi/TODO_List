@@ -1,0 +1,14 @@
+<mat-toolbar class="navbar">
+  <span>TODO_List</span>
+  <button mat-raised-button color="primary" (click)="onLogout()">Logout</button>
+</mat-toolbar>
+<div class="main">
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <p *ngFor="let task of getActiveTasks()">{{ task.title }}</p>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <p *ngFor="let task of getCompletedTasks()">{{ task.title }}</p>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

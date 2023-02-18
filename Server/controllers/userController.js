@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { User } = require("../models/user");
 
+//get all tasks of a user
 router.get("/:id", (req, res) => {
 	User.findById(req.params.id)
 		.select("username tasks")
@@ -12,6 +13,7 @@ router.get("/:id", (req, res) => {
 		});
 });
 
+//add task to a user
 router.post("/:id/AddTask", (req, res) => {
 	User.findById(req.params.id, (err, data) => {
 		if (err) return console.error(err);
@@ -26,6 +28,7 @@ router.post("/:id/AddTask", (req, res) => {
 	});
 });
 
+//remove task from a user
 router.put("/:id/RemoveTask", (req, res) => {
 	User.updateOne(
 		{ _id: req.params.id },
@@ -37,6 +40,7 @@ router.put("/:id/RemoveTask", (req, res) => {
 	);
 });
 
+//update a task title of a user
 router.put("/:id/UpdateTask", (req, res) => {
 	User.updateOne(
 		{ _id: req.params.id, "tasks._id": req.body.objectId },
@@ -48,6 +52,7 @@ router.put("/:id/UpdateTask", (req, res) => {
 	);
 });
 
+//update a task completed status of a user
 router.put("/:id/CompleteTask", (req, res) => {
 	User.updateOne(
 		{ _id: req.params.id, "tasks._id": req.body.objectId },
