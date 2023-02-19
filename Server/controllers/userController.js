@@ -56,7 +56,7 @@ router.put("/:id/UpdateTask", (req, res) => {
 router.put("/:id/CompleteTask", (req, res) => {
 	User.updateOne(
 		{ _id: req.params.id, "tasks._id": req.body.objectId },
-		{ $set: { "tasks.$.completed": req.body.completed } },
+		{ $set: { "tasks.$.completed": true } },
 		(err, data) => {
 			if (err) return console.error(err);
 			res.send(data);

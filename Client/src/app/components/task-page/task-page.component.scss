@@ -4,5 +4,11 @@
   height: 5vh;
 }
 .main {
-  height: 95vh;
+  height: 95vh !important;
+  background-color: darkslategray;
+}
+.taskTitle {
+  color: white;
+  font-size: 1.5rem;
+  margin: 0;
 }

@@ -31,4 +31,39 @@ export class UserService {
       `http://localhost:3000/user/${localStorage.getItem('userId')}`
     );
   }
+  addTask(title: String) {
+    return this.http.post(
+      `http://localhost:3000/user/${localStorage.getItem('userId')}/AddTask`,
+      {
+        title: title,
+      }
+    );
+  }
+  removeTask(taskId: String) {
+    return this.http.put(
+      `http://localhost:3000/user/${localStorage.getItem('userId')}/RemoveTask`,
+      {
+        objectId: taskId,
+      }
+    );
+  }
+  completeTask(taskId: String) {
+    return this.http.put(
+      `http://localhost:3000/user/${localStorage.getItem(
+        'userId'
+      )}/CompleteTask`,
+      {
+        objectId: taskId,
+      }
+    );
+  }
+  editTask(taskId: String, title: String) {
+    return this.http.put(
+      `http://localhost:3000/user/${localStorage.getItem('userId')}/UpdateTask`,
+      {
+        objectId: taskId,
+        title: title,
+      }
+    );
+  }
 }
