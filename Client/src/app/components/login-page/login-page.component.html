@@ -1,12 +1,6 @@
 <div class="main">
   <h1>TODO_List</h1>
   <form class="login-form" #loginForm="ngForm">
-    <input
-      type="hidden"
-      name="_id"
-      #_id="ngModel"
-      [(ngModel)]="userService.currentUser._id"
-    />
     <mat-form-field appearance="outline">
       <mat-label>Username</mat-label>
       <input
@@ -14,7 +8,7 @@
         placeholder="Username"
         name="username"
         #username="ngModel"
-        [(ngModel)]="userService.currentUser.username"
+        [(ngModel)]="currentUser.username"
       />
     </mat-form-field>
     <mat-form-field appearance="outline">
@@ -25,7 +19,7 @@
         type="password"
         name="password"
         #password="ngModel"
-        [(ngModel)]="userService.currentUser.password"
+        [(ngModel)]="currentUser.password"
       />
     </mat-form-field>
     <div class="buttonsContainer">

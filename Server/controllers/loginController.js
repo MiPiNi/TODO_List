@@ -6,13 +6,17 @@ const { User } = require("../models/user");
 // get user by username and password
 // if user does not exist, returns null
 router.post("/login", (req, res) => {
-	User.findOne(
-		{ username: req.body.username, password: req.body.password },
-		(err, docs) => {
-			if (err) return console.error(err);
-			res.send(docs);
-		}
-	);
+	User.findOne({ username: req.body.username, password: req.body.password })
+		.select("-__v -password")
+		.exec((err, docs) => {
+			if (err) return res.send({ message: err });
+			if (docs == null) return res.send({ message: "User not found" });
+			res.send({
+				_id: docs._id,
+				username: docs.username,
+				tasks: docs.tasks,
+			});
+		});
 });
 
 // register a new user with username and password

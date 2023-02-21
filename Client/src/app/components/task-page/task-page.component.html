@@ -1,6 +1,11 @@
 <mat-toolbar class="navbar">
   <span>TODO_List</span>
-  <button mat-raised-button color="primary" (click)="onLogout()">Logout</button>
+  <span>
+    {{ currentUserName }}
+    <button mat-raised-button color="primary" (click)="onLogout()">
+      Logout
+    </button>
+  </span>
 </mat-toolbar>
 <div class="main">
   <mat-grid-list cols="2">
