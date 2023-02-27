@@ -1,6 +1,8 @@
 <div class="main">
   <h1>TODO_List</h1>
   <form class="login-form" #loginForm="ngForm">
+    <p *ngIf="isError" class="login-error">{{ errorMessage + "!" }}</p>
+    <!-- Error message -->
     <mat-form-field appearance="outline">
       <mat-label>Username</mat-label>
       <input

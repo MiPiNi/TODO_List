@@ -1,136 +1,153 @@
-<mat-toolbar class="navbar">
-  <span>TODO_List</span>
-  <span>
-    {{ currentUserName }}
-    <button mat-raised-button color="primary" (click)="onLogout()">
-      Logout
-    </button>
-  </span>
-</mat-toolbar>
 <div class="main">
-  <mat-grid-list cols="2">
-    <mat-grid-tile class="main-left">
-      <table>
-        <tr>
-          <th>
-            <mat-form-field>
-              <input
-                matInput
-                placeholder="Enter new task"
-                #title
-                (keydown.enter)="onAddTask(title)"
-              />
-            </mat-form-field>
-          </th>
-          <th>
-            <button
-              mat-fab
-              color="primary"
-              matTooltip="Basic"
-              aria-label="Add new task"
-              (click)="onAddTask(title)"
-            >
-              <mat-icon>add</mat-icon>
-            </button>
-          </th>
-        </tr>
-        <tr *ngFor="let task of getActiveTasks()">
-          <input type="hidden" #task_id value="{{ task._id }}" />
-
-          <td>
-            <mat-card>
-              <mat-card-content
-                *ngIf="!edit_button.disabled"
-                class="taskTitle"
-                >{{ task.title }}</mat-card-content
+  <mat-toolbar class="navbar">
+    <span>TODO_List</span>
+    <span>
+      {{ currentUserName }}
+      <button mat-raised-button color="primary" (click)="onLogout()">
+        Logout
+      </button>
+    </span>
+  </mat-toolbar>
+  <div class="main-content">
+    <mat-grid-list cols="2" rowHeight="fit" class="main-grid">
+      <mat-grid-tile class="main-left">
+        <!-- Active tasks -->
+        <table class="tasks-list">
+          <tr>
+            <th>
+              <mat-form-field>
+                <!-- New task input field-->
+                <input
+                  matInput
+                  placeholder="Enter new task"
+                  #NewTask
+                  (keydown.enter)="onAddTask(NewTask)"
+                  [disabled]="isEditing"
+                />
+              </mat-form-field>
+            </th>
+            <th>
+              <button
+                mat-fab
+                color="primary"
+                matTooltip="Basic"
+                aria-label="Add new task"
+                (click)="onAddTask(NewTask)"
+                [disabled]="isEditing"
               >
-              <mat-card-content *ngIf="edit_button.disabled">
-                <mat-form-field>
-                  <input
-                    matInput
-                    #task_edit
-                    value="{{ task.title }}"
-                    (keydown.enter)="
+                <mat-icon>add</mat-icon>
+              </button>
+            </th>
+          </tr>
+          <tr *ngFor="let task of getActiveTasks()">
+            <!-- Get all active tasks and add table rows for them-->
+            <input type="hidden" #task_id value="{{ task._id }}" />
+            <!-- Hidden input field to store task id-->
+
+            <td>
+              <mat-card class="tasks-active">
+                <!-- Task card -->
+                <mat-card-content
+                  *ngIf="!edit_button.disabled"
+                  class="tasks-title"
+                  >{{ task.title }}</mat-card-content
+                >
+                <!-- Content rendered when user is not editing-->
+                <mat-card-content
+                  *ngIf="edit_button.disabled"
+                  class="tasks-editField"
+                >
+                  <!-- Content rendered when user is editing-->
+                  <mat-form-field>
+                    <input
+                      matInput
+                      #task_edit
+                      value="{{ task.title }}"
+                      (keydown.enter)="
+                        onEditTask(task_id.value, task_edit.value);
+                        edit_button.disabled = false;
+                        isEditing = false
+                      "
+                    />
+                  </mat-form-field>
+                  <button
+                    mat-fab
+                    color="accent"
+                    aria-label="Confirm edit"
+                    (click)="
                       onEditTask(task_id.value, task_edit.value);
                       edit_button.disabled = false;
-                      clicked = false
+                      isEditing = false
                     "
-                  />
-                </mat-form-field>
-                <button
-                  mat-fab
-                  color="accent"
-                  matTooltip="Basic"
-                  aria-label="Confirm edit"
-                  (click)="
-                    onEditTask(task_id.value, task_edit.value);
-                    edit_button.disabled = false;
-                    clicked = false
-                  "
-                >
-                  <mat-icon>done</mat-icon>
-                </button>
-              </mat-card-content>
-            </mat-card>
-          </td>
-          <td>
-            <button
-              #edit_button
-              mat-fab
-              color="accent"
-              matTooltip="Basic"
-              aria-label="Edit task"
-              (click)="clicked = true; edit_button.disabled = true"
-              [hidden]="clicked"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-fab
-              color="warn"
-              matTooltip="Basic"
-              aria-label="Delete task"
-              (click)="onRemoveTask(task_id.value)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button
-              mat-fab
-              color="primary"
-              matTooltip="Basic"
-              aria-label="Complete task"
-              (click)="onCompleteTask(task_id.value)"
-            >
-              <mat-icon>done</mat-icon>
-            </button>
-          </td>
-        </tr>
-      </table>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <table>
-        <tr *ngFor="let task of getCompletedTasks()">
-          <td>
-            <input type="hidden" #task_id value="{{ task._id }}" />
-            <mat-card>
-              <mat-card-content class="taskTitle">{{
-                task.title
-              }}</mat-card-content>
-            </mat-card>
-          </td>
-          <td>
-            <button
-              mat-fab
-              color="warn"
-              matTooltip="Basic"
-              aria-label="Delete task"
-              (click)="onRemoveTask(task_id.value)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </tr>
-      </table>
-    </mat-grid-tile>
-  </mat-grid-list>
+                  >
+                    <mat-icon>done</mat-icon>
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            </td>
+            <td>
+              <!-- Task action buttons -->
+              <button
+                #edit_button
+                mat-fab
+                color="accent"
+                aria-label="Edit task"
+                (click)="isEditing = true; edit_button.disabled = true"
+                [hidden]="isEditing"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-fab
+                color="warn"
+                aria-label="Delete task"
+                (click)="onRemoveTask(task_id.value)"
+                [disabled]="isEditing"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button
+                mat-fab
+                color="primary"
+                aria-label="Complete task"
+                (click)="onCompleteTask(task_id.value)"
+                [disabled]="isEditing"
+              >
+                <mat-icon>done</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <!-- Completed tasks -->
+        <table class="tasks-list">
+          <tr *ngFor="let task of getCompletedTasks()">
+            <!-- Get all completed tasks and add table rows for them-->
+            <td>
+              <input type="hidden" #task_id value="{{ task._id }}" />
+              <!-- Hidden input field to store task id-->
+              <mat-card class="tasks-completed">
+                <mat-card-content class="tasks-title">{{
+                  task.title
+                }}</mat-card-content>
+              </mat-card>
+            </td>
+            <td>
+              <!-- Task action button -->
+              <button
+                mat-fab
+                color="warn"
+                aria-label="Delete task"
+                (click)="onRemoveTask(task_id.value)"
+                [disabled]="isEditing"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
 </div>
